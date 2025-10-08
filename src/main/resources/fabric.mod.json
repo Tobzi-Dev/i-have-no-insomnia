@@ -1,0 +1,34 @@
+{
+	"schemaVersion": 1,
+	"id": "i-have-no-insomnia",
+	"version": "${version}",
+	"name": "I Have No Insomnia",
+    "description": "Allows players to individually disable phantom spawns",
+    "authors": [
+      "Tobzi"
+    ],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/i-have-no-insomnia/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.tobzi.ihavenoinsomnia.IHaveNoInsomnia"
+		]
+	},
+	"mixins": [
+		"i-have-no-insomnia.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.17.2",
+		"minecraft": "~1.21.8",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
