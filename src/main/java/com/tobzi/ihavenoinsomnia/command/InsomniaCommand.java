@@ -1,18 +1,18 @@
 package com.tobzi.ihavenoinsomnia.command;
 
+import static net.minecraft.commands.Commands.literal;
+
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.tobzi.ihavenoinsomnia.util.InsomniaManager;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
-
-import static net.minecraft.server.command.CommandManager.literal;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 
 public class InsomniaCommand {
 
-    public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(literal("insomnia")
                 .requires(source -> source.getPlayer() != null)
                 .then(literal("disable")
@@ -24,24 +24,24 @@ public class InsomniaCommand {
         );
     }
 
-    private static int disableInsomnia(CommandContext<ServerCommandSource> context) {
+    private static int disableInsomnia(CommandContext<CommandSourceStack> context) {
 
-        ServerPlayerEntity player = context.getSource().getPlayer();
+        ServerPlayer player = context.getSource().getPlayer();
 
         assert player != null;
-        InsomniaManager.addPlayer(player.getUuid());
+        InsomniaManager.addPlayer(player.getUUID());
         InsomniaManager.save();
-        context.getSource().sendFeedback(() -> Text.literal("Phantom spawns have been disabled for you."), false);
+        context.getSource().sendSuccess(() -> Component.literal("Phantom spawns have been disabled for you."), false);
         return Command.SINGLE_SUCCESS;
     }
 
-    private static int enableInsomnia(CommandContext<ServerCommandSource> context) {
-        ServerPlayerEntity player = context.getSource().getPlayer();
+    private static int enableInsomnia(CommandContext<CommandSourceStack> context) {
+        ServerPlayer player = context.getSource().getPlayer();
 
         assert player != null;
-        InsomniaManager.removePlayer(player.getUuid());
+        InsomniaManager.removePlayer(player.getUUID());
         InsomniaManager.save();
-        context.getSource().sendFeedback(() -> Text.literal("Phantom spawns have been enabled for you."), false);
+        context.getSource().sendSuccess(() -> Component.literal("Phantom spawns have been enabled for you."), false);
         return Command.SINGLE_SUCCESS;
     }
 }
