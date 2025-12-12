@@ -15,18 +15,15 @@ import java.util.stream.Collectors;
 public class PhantomSpawnerMixin {
 
     @Redirect(
-            method = "spawn(Lnet/minecraft/server/world/ServerWorld;ZZ)V",
+            method = "spawn(Lnet/minecraft/server/world/ServerWorld;Z)V",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/server/world/ServerWorld;getPlayers()Ljava/util/List;"
             )
     )
     private List<ServerPlayerEntity> filterPlayerListForPhantomSpawning(ServerWorld world) {
-        // Get the original, complete list of players from the world.
         List<ServerPlayerEntity> originalPlayers = world.getPlayers();
 
-        // Create a new list containing only the players who have NOT disabled insomnia.
-        // This is safe and has no side effects on the original list.
         return originalPlayers.stream()
                 .filter(player -> !InsomniaManager.isInsomniaDisabled(player.getUuid()))
                 .collect(Collectors.toList());
